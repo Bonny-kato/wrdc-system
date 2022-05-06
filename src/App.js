@@ -1,10 +1,13 @@
 import './App.css';
+import BaseLayout from "./Layouts/BaseLayout";
 function App() {
 
   return (
-    <div id={'app'} className="bg-gray-500" >
-
-    </div>
+    <>
+        <BaseLayout>
+            <h1>hllo</h1>
+        </BaseLayout>
+    </>
   );
 }
 
