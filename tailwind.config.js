@@ -8,8 +8,11 @@ module.exports = {
         primary: "#1f2125",
         secondary: "#bcbcbc",
         accent: "#26282a",
-        accent2: "#323435"
-      }
+        accent2: "#323435",
+        accent3: "rgb(66, 65, 77)"
+      },
+
+
     },
   },
   plugins: [],
