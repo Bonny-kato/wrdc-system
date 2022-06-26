@@ -4,7 +4,15 @@ module.exports = {
   ],
   theme: {
     extend: {
+      textColor:{
+        skin:{
+          base:'var(---color-text-base)'
+        }
+      },
       colors:{
+        skin:{
+          secondary: 'var(---color-secondary)',
+        },
         primary: "#1f2125",
         secondary: "#bcbcbc",
         accent: "#26282a",
@@ -12,8 +20,20 @@ module.exports = {
         accent3: "rgb(66, 65, 77)"
       },
 
+      backgroundColor:{
+        skin:{
+          primary: 'var(---color-primary)',
+          secondary: 'var(---color-secondary)',
+          accent: 'var(---color-accent)'
+        }
+      },
+      boxShadow:{
+          base: 'var(---color-shadow-base)'
+      }
+
 
     },
   },
   plugins: [],
 }
+

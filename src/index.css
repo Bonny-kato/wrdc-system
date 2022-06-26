@@ -9,9 +9,27 @@
     }
 }
 
+@layer base {
+    :root{
+        ---color-text-base: #455560;
+        ---color-primary: #f4f4f4;
+        ---color-secondary: #fafafb;
+        ---color-accent: #62b4ff;
+        ---color-shadow-base: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    }
+}
+
+div[theme="dark"], section[theme="dark"]{
+    ---color-text-base: #bbbbbb;
+    ---color-primary: #202020;
+    ---color-secondary: #2d2d2d;
+    ---color-shadow-base: rgba(0, 0, 0, 0.2) 0px 5px 10px;
+}
+
 *{
     font-family: 'Nunito', sans-serif;
 }
+
 
 .sidebar {
     background-color: rgba(35, 55, 75, 0.9);

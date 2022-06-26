@@ -1,91 +1,248 @@
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+
+
 import BaseLayout from "../../Layouts/BaseLayout";
+import {useForm} from "react-hook-form";
+import {useState, useRef} from "react"
+import {Input, Option, Select} from "../../components/form-control";
+import {useMutation, useQuery} from "react-query";
+import {fetchHouses, registerCitizen} from "../../provider/api";
+import {Link} from "react-router-dom";
+
+export const FieldWrapper = ({children, className}) =>{
+    return (
+        <div className={`flex flex-col text-skin-base space-y-3 ${className}`}>
+            {children}
+        </div>
+    )
+}
 
 const CitizenRegistration = () =>{
+
+    const validationSchema = Yup.object({
+      firstName: Yup.string().required("first name is required"),
+      middleName: Yup.string().required("middle name is required"),
+      lastName: Yup.string().required("last name is required"),
+      disability: Yup.string().required("this field is required"),
+        dob: Yup.string().required("this field is required"),
+      religion: Yup.string().required("this field is required"),
+      gender: Yup.string().required("this field is required"),
+      region: Yup.string().required("this field is required"),
+      district: Yup.string().required("this field is required"),
+      street: Yup.string().required("this field is required"),
+      house: Yup.string().required("this field is required"),
+
+    });
+    const [housesList, setHousesList] = useState([]);
+
+    useQuery('houses-list', fetchHouses, {
+        onSuccess:(res) => {
+            setHousesList(res.data)
+        }
+    })
+
+    const [age, setAge] = useState(0)
+    const citizenUrl = useRef(null);
+
+    const {handleSubmit, register, formState:{errors}} = useForm({
+        resolver:yupResolver(validationSchema)
+    })
+    const [isChildren, setIsChildren] = useState(true)
+
+    console.log("ERROR", errors)
+
+    const onSuccess = () =>{
+        citizenUrl.current && citizenUrl.current.click();
+    }
+
+    const {mutate} =  useMutation(registerCitizen,  {
+        onSuccess,
+    })
+
+    const onSubmit = (formData) => {
+        mutate({...formData, age:age})
+        console.log("added successfully..")
+    }
+
+    console.log()
+
+    const calculateAge = (birth_date) =>{
+        const today = new Date();
+        let birthDate = new Date(birth_date);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        let m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate()))
+        {
+            age--;
+        }
+
+        age >= 18 && setIsChildren(false);
+        age < 18 && setIsChildren(true);
+        setAge(age)
+    }
+
     return (
         <BaseLayout>
-           <section className={'h-full space-y-10 pt-8 px-20'}>
+           <form onSubmit={handleSubmit(onSubmit)} className={'h-full space-y-10 pt-8 px-20'}>
                <div className={'text-secondary font-semibold text-lg'}>
                    Citizen Registration
                </div>
 
+               <Link ref={citizenUrl} to={'/citizens'} className={"hidden"}></Link>
+
                <div className={'border-[1px] border-secondary/20 rounded-xl p-6  relative'}>
                    <p className={'absolute -top-3 ml-4 bg-accent2/95 text-sm font-bold px-2 text-secondary'}> Basic Info</p>
 
-                   <form action="" className={'grid grid-cols-3 gap-x-5 gap-y-8 text-secondary '}>
-                        <div className={'flex flex-col space-y-3 '}>
-                            <label htmlFor="" className={'text-sm'}>First Name</label>
-                            <input type="text" className={'rounded-md outline-none text-sm bg-secondary/10 p-3'}/>
-                        </div>
+                   <div className={'grid grid-cols-3 gap-x-5 gap-y-8 text-secondary '}>
 
-                       <div className={'flex flex-col space-y-3 '}>
-                           <label htmlFor="" className={'text-sm'}>Middle Name</label>
-                           <input type="text" className={'rounded-md outline-none text-sm bg-secondary/10 p-3'}/>
-                       </div>
+                       <FieldWrapper>
+                           <Input
+                               register={register}
+                               name={"firstName"}
+                               label={'First Name'}/>
+                       </FieldWrapper>
 
-                       <div className={'flex flex-col space-y-3 '}>
-                           <label htmlFor="" className={'text-sm'}>Last Name</label>
-                           <input type="text" className={'rounded-md outline-none text-sm bg-secondary/10 p-3'}/>
-                       </div>
+                       <FieldWrapper>
+                           <Input
+                               register={register}
+                               name={"middleName"}
+                               label={'Middle Name'}/>
+                       </FieldWrapper>
 
-                       <div className={'flex flex-col space-y-3 '}>
-                           <label htmlFor="" className={'text-sm'}>Birth Date</label>
-                           <input type="date" className={'rounded-md outline-none text-sm bg-secondary/10 p-3'}/>
-                       </div>
+                       <FieldWrapper>
+                           <Input
+                               register={register}
+                               name={"lastName"}
+                               label={'Last Name'}/>
+                       </FieldWrapper>
 
-                       <div className={'flex flex-col space-y-3 '}>
-                           <label htmlFor="" className={'text-sm'}>Religion Name</label>
-                           <select className={'rounded-md outline-none capitalize text-sm bg-secondary/10 p-3'}>
-                               <option value="">christian</option>
-                               <option value="">christian</option>
-                               <option value="">christian</option>
-                           </select>
-                       </div>
+                       <FieldWrapper>
+                           <Input
+                               onChange={calculateAge}
+                               register={register}
+                               type={'date'}
+                               name={"dob"}
+                               label={'Birth Date'}/>
+                       </FieldWrapper>
 
-                       <div className={'flex flex-col space-y-3 '}>
-                           <label htmlFor="" className={'text-sm'}>Gender</label>
-                           <select className={'rounded-md outline-none capitalize text-sm bg-secondary/10 p-3'}>
-                               <option value="">Male</option>
-                               <option value="">Female</option>
-                           </select>
-                       </div>
 
-                       <div className={'flex flex-col space-y-3 '}>
-                           <label htmlFor="" className={'text-sm'}>Disability</label>
-                           <select className={'rounded-md outline-none capitalize text-sm bg-secondary/10 p-3'}>
-                               <option value="">Male</option>
-                               <option value="">Female</option>
-                           </select>
-                       </div>
+                       <FieldWrapper>
+                           <Select {...register('religion')} label={'religion'}>
+                               <Option value={'christian'} />
+                               <Option value={'muslim'} />
+                               <Option value={'other'} />
+                           </Select>
+                       </FieldWrapper>
 
-                       <div className={'flex flex-col space-y-3 '}>
-                           <label htmlFor="" className={'text-sm'}>Region</label>
-                           <input type="text" className={'rounded-md outline-none text-sm bg-secondary/10 p-3'}/>
-                       </div>
+                       <FieldWrapper>
+                           <Select {...register('gender')} label={'gender'}>
+                               <Option value={'M'} text={'Male'}/>
+                               <Option value={'F'} text={'Female'}/>
+                           </Select>
+                       </FieldWrapper>
 
-                       <div className={'flex flex-col space-y-3 '}>
-                           <label htmlFor="" className={'text-sm'}>District</label>
-                           <input type="text" className={'rounded-md outline-none text-sm bg-secondary/10 p-3'}/>
-                       </div>
 
-                       <div className={'flex flex-col space-y-3 '}>
-                           <label htmlFor="" className={'text-sm tracking-wide'}>Village/Street</label>
-                           <input type="text" className={'rounded-md outline-none text-sm bg-secondary/10 p-3'}/>
-                       </div>
 
-                       <div className={'flex flex-col space-y-3 '}>
-                           <label htmlFor="" className={'text-sm'}>House Number</label>
-                           <input type="text" className={'rounded-md outline-none text-sm bg-secondary/10 p-3'}/>
-                       </div>
+                       <FieldWrapper>
+                           <Select {...register('disability')} label={'disability'}>
+                               <Option value={'none'} />
+                               <Option value={'vision Impairment'} />
+                               <Option value={'vision Impairment'} />
+                               <Option value={'deaf or hard of hearing'} />
+                               <Option value={'mental health conditions'} />
+                               <Option value={'intellectual disability'} />
+                               <Option value={'acquired brain injury'} />
+                               <Option value={'autism spectrum disorder'} />
+                               <Option value={'physical disability'} />
+                           </Select>
+                       </FieldWrapper>
 
-                       <div className={'flex flex-col space-y-3 '}>
-                           <label htmlFor="" className={'text-sm'}>Title</label>
-                           <input type="text" className={'rounded-md outline-none text-sm bg-secondary/10 p-3'}/>
-                       </div>
+                       <FieldWrapper>
+                           <Input
+                               register={register}
+                               name={"region"}
+                               label={'Region'}/>
+                       </FieldWrapper>
 
-                   </form>
+                       <FieldWrapper>
+                           <Input
+                               register={register}
+                               name={"district"}
+                               label={'district'}/>
+                       </FieldWrapper>
+
+                       <FieldWrapper>
+                           <Input
+                               register={register}
+                               name={"street"}
+                               label={'street'}/>
+                       </FieldWrapper>
+
+
+                       <FieldWrapper>
+                           <Select {...register('house')} label={'house number'}>
+                               {housesList.map((house) => (
+                                   <Option value={house?._id} text={house?.identificationNumber}/>
+                               ))}
+                           </Select>
+                       </FieldWrapper>
+
+
+                   </div>
                </div>
 
-           </section>
+               {!isChildren && (
+                   <div className={'border-[1px] border-secondary/20 rounded-xl p-6  relative'}>
+                       <p className={'absolute -top-3 ml-4 bg-accent2/95 text-sm font-bold px-2 text-secondary'}>
+                           Other Info
+                       </p>
+
+                       <div className={'grid grid-cols-3 gap-x-5 gap-y-8 text-secondary '}>
+
+                           <FieldWrapper>
+                               <Input
+                                   register={register}
+                                   name={"phone_number"}
+                                   label={'phone number'}/>
+                           </FieldWrapper>
+
+                           <FieldWrapper>
+                               <Input
+                                   register={register}
+                                   name={"email"}
+                                   label={"email"}/>
+                           </FieldWrapper>
+
+                           <FieldWrapper>
+                               <Input
+                                   register={register}
+                                   name={"title"}
+                                   label={'title'}/>
+                           </FieldWrapper>
+
+
+                           <FieldWrapper>
+                               <Select {...register('marital_status')} label={'Marital Status'}>
+                                   <Option value={'married'} />
+                                   <Option value={'widowed'} />
+                                   <Option value={'separated'} />
+                                   <Option value={'divorced'} />
+                                   <Option value={'single'} />
+                               </Select>
+                           </FieldWrapper>
+
+                       </div>
+
+                   </div>
+               )}
+
+               <div className={'pb-20'}>
+                   <button type={'submit'} className={'bg-blue-600 px-6 py-3 text-xs uppercase rounded text-white '}>
+                       submit
+                   </button>
+               </div>
+           </form>
         </BaseLayout>
     )
 }

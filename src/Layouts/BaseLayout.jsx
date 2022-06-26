@@ -3,7 +3,7 @@ import DetailsArea from "../_partials/DetailsArea";
 
 const BaseLayout = (props) =>{
     return (
-        <section className={'h-screen flex outline-white'}>
+        <section theme={'dark'}  className={'h-screen flex outline-white'}>
             <SideBar />
             <DetailsArea props={props}/>
         </section>

@@ -40,7 +40,7 @@ const BarChart = ({ labels, data }) => {
             y: {
                 title: {
                     display: true,
-                    text: "Total Fund Used",
+                    text: "Number of Citizen",
                     color: "#187AE4",
                 },
             },
