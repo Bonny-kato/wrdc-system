@@ -85,8 +85,9 @@ const CitizenRegistration = () =>{
     return (
         <BaseLayout>
            <form onSubmit={handleSubmit(onSubmit)} className={'h-full space-y-10 pt-8 px-20'}>
-               <div className={'text-secondary font-semibold text-lg'}>
-                   Citizen Registration
+               <div className={'text-secondary  font-semibold text-lg'}>
+                   <p>Citizen Registration</p>
+                   <p className={'text-sm font-light opacity-80'}>Click <a className={'text-blue-500'} href="/pdf/citizen-reg-form.pdf" download target={"_blank"}>here</a> to download registration form </p>
                </div>
 
                <Link ref={citizenUrl} to={'/citizens'} className={"hidden"}></Link>

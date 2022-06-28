@@ -8,6 +8,7 @@ export const Input = (
         onChange = null,
         defaultValue = "",
         errorMessage = null,
+        required=true,
         isError = false,
     }) => {
     const inputRef = useRef(null)
@@ -20,7 +21,10 @@ export const Input = (
 
     return (
         <>
-            <label htmlFor={name} className={'text-sm capitalize'}>{label}</label>
+           <div className={'flex justify-between items-center'}>
+               <label htmlFor={name} className={'text-sm capitalize'}>{label}</label>
+               {!required && <span className={'text-xs opacity-80'}>( Optional )</span>}
+           </div>
             <input
                 ref={inputRef}
                 {...register(name)}
@@ -48,7 +52,7 @@ export const Select = forwardRef(({onChange, onBlur, name, label, defautlValue =
                 defaultValue={defautlValue}
                 className={'rounded-md outline-none focus:ring-2 focus:ring-blue-600/80 capitalize text-sm bg-secondary/10 p-3'}
                 onChange={onChange} onBlur={onBlur}>
-            <option disabled={true} value="90">Choose ..</option>
+            <option disabled={true} value="">Choose ..</option>
             {children}
         </select>
     </>

@@ -1,9 +1,9 @@
 import React from "react";
 import { Chart, registerables } from "chart.js";
-import { Bar } from "react-chartjs-2";
+import { Pie } from "react-chartjs-2";
 Chart.register(...registerables);
 
-const BarChart = ({ labels, data }) => {
+const PieChart = ({ labels=[], data=[] }) => {
     const dataSets = {
         labels: labels,
         datasets: [
@@ -36,21 +36,12 @@ const BarChart = ({ labels, data }) => {
         aspectRatio: 1,
         barThickness: 70,
         maintainAspectRatio: false,
-        scales: {
-            y: {
-                title: {
-                    // display: false,
-                    text: "Number of Citizen",
-                    color: "#187AE4",
-                },
-            }
-        },
     };
     return (
         <div className="h-full">
-            <Bar data={dataSets} options={options} />
+            <Pie data={dataSets} options={options} />
         </div>
     );
 };
 
-export default BarChart;
+export default PieChart;

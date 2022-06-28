@@ -7,11 +7,13 @@ import {useMutation} from "react-query";
 import {login} from "../../provider/api";
 import {useEffect, useRef, useState} from "react";
 import {useAuth} from "../../provider/auth";
+import Button from "../../components/Button";
+import {getValueFromLocalStorage} from "../../hooks/useLocalStorageState";
 
 
 const Login = () =>{
     const {saveAuthUser} = useAuth();
-    const theme = "dark";
+    const currTheme = getValueFromLocalStorage('theme', 'light');
 
     // show error message after fail to login
     const [errorMessage, setErrorMessage] = useState("");
@@ -48,8 +50,8 @@ const Login = () =>{
         mutate(formData);
     }
     return (
-        <section theme={theme} className={'flex  justify-center items-center h-screen bg-skin-primary'}>
-            <form onSubmit={handleSubmit(onSubmit)} className={'bg-skin-secondary shadow space-y-3 w-[30%] p-10 rounded-lg'} action="">
+        <section theme={currTheme} className={'flex  justify-center items-center h-screen bg-skin-primary'}>
+            <form onSubmit={handleSubmit(onSubmit)} className={'bg-skin-secondary shadow-base space-y-3 w-[30%] p-10 rounded-lg'} action="">
                 <p className={'font-semibold  text-center capitalize text-xl text-skin-base'}>
                     Login
                     </p>
@@ -75,9 +77,9 @@ const Login = () =>{
                 {errorMessage && <p className={'text-red-600 text-sm font-light capitalize tracking-wider'}>{errorMessage}</p>}
 
                 <div className={'pt-2'}>
-
-                        <button type={"submit"} className={'text-white tracking-wide  cursor-pointer hover:bg-blue-600 bg-blue-500 text-sm w-full py-3 rounded-md'}>Login</button>
-
+                    <Button type={'submit'}  loading={isLoading} className={'bg-accent4 p-4 w-full'}>
+                        Login
+                    </Button>
                 </div>
             </form>
         </section>

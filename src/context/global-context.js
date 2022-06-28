@@ -3,16 +3,23 @@ import {useQuery} from "react-query";
 import {fetchCitizens} from "../provider/api";
 import {useSelector} from "react-redux";
 import {getAge} from "../utils";
+import {getValueFromLocalStorage} from "../hooks/useLocalStorageState";
 
 export const GlobalContext = createContext(null)
 const GlobalContextProvider = ({children: children_}) => {
     const [citizens, setCitizens] = useState([]);
+    const [currTheme, setCurrTheme] = useState(
+        getValueFromLocalStorage('theme', 'light')
+    )
     const [citizensGroups, setCitizensGroups] = useState({
         elders: [],
         youth: [],
-        children: []
+        children: [],
+        male:[],
+        female: [],
+        disability:[]
     });
-    const {data:response, isLoading} = useQuery('citizen', fetchCitizens)
+    const {data:response, isLoading, isFetching} = useQuery('citizen', fetchCitizens)
     const [isOpenedSubmenu, setIsOpenedSubmenu] = useState(false);
 
     // if (isLoading) {
@@ -27,9 +34,11 @@ const GlobalContextProvider = ({children: children_}) => {
         const citizensObj = {
             elders:newList.filter(citizen=>citizen.age >= 45),
             youth:newList.filter(citizen=>citizen.age >= 18 && citizen.age <= 44),
-            children:newList.filter(citizen=>citizen.age < 18)
+            children:newList.filter(citizen=>citizen.age < 18),
+            male:newList.filter(citizen=>citizen.gender.toLowerCase() === "m"),
+            female:newList.filter(citizen=>citizen.gender.toLowerCase() === "f"),
+            disability:newList.filter(citizen=>citizen.disability.toLowerCase() !== "none")
         }
-        // console.log("OBJECT:", citizensObj)
         setCitizensGroups(citizensObj)
 
 
@@ -57,6 +66,7 @@ const GlobalContextProvider = ({children: children_}) => {
     return (
         <GlobalContext.Provider value={{
             citizens, isLoading, isOpenedSubmenu,
+            isFetching,currTheme, setCurrTheme,
             setIsOpenedSubmenu,citizensGroups
         }}>
             {children_}

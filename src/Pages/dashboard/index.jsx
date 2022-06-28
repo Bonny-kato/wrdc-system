@@ -6,15 +6,17 @@ import {useGlobalContext} from "../../context/global-context";
 import {useSelector} from "react-redux";
 
 const Dashboard = () => {
-    const {citizensGroups} = useGlobalContext();
+    const {citizensGroups, citizens} = useGlobalContext();
+    const {male, female, youth, elders, children, disability} = citizensGroups;
     const statistics = {
-        all: citizensGroups?.children.length + citizensGroups?.youth.length + citizensGroups?.elders.length,
-        youth: citizensGroups?.youth.length,
-        elders:citizensGroups?.elders.length,
-        children:citizensGroups?.children.length
+        all: children.length + youth.length + elders.length,
+        youth: youth.length,
+        elders:elders.length,
+        children:children.length,
+        male: male.length,
+        female:female.length,
+        disability:disability.length
     }
-
-
     return (
         <BaseLayout>
             <section>
@@ -25,7 +27,7 @@ const Dashboard = () => {
 
                 <div className={'space-y-8'}>
                     <div className={'grid grid-cols-2 gap-x-8 mt-6'}>
-                        <div className={`h-[18rem] bg-skin-secondary shadow-base rounded-xl`}>
+                        <div className={`h-[18rem] p-3 bg-skin-secondary shadow-base rounded-xl`}>
                             <BarChart
                                 labels={[
                                     "All citizen",
@@ -43,14 +45,14 @@ const Dashboard = () => {
                         </div>
 
                         <div className={'grid grid-cols-2 gap-4'}>
-                            <StatisticCard title={"Citizens"} value={statistics.all || 0}/>
-                            <StatisticCard title={"Children"} value={statistics.children || 0}/>
-                            <StatisticCard title={"Youth"} value={statistics.youth || 0}/>
-                            <StatisticCard title={"Elders"} value={statistics.elders || 0}/>
+                            <StatisticCard linkTo={'/citizens'} title={"citizens"} value={statistics.all || 0}/>
+                            <StatisticCard linkTo={'/statistics/children'} title={"children"} value={statistics.children || 0}/>
+                            <StatisticCard linkTo={'/statistics/youth'} title={"youth"} value={statistics.youth || 0}/>
+                            <StatisticCard linkTo={'/statistics/elders'} title={"elders"} value={statistics.elders || 0}/>
                         </div>
                     </div>
 
-                    <RecentlyActions/>
+                    <RecentlyActions citizens={citizens?.reverse().slice(0,5)} statistics={statistics}/>
                 </div>
             </section>
         </BaseLayout>

@@ -1,32 +1,46 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer components {
-    .details-area{
+    .details-area {
         width: calc(100% - 240px);
     }
 }
 
 @layer base {
-    :root{
+    :root {
         ---color-text-base: #455560;
         ---color-primary: #f4f4f4;
         ---color-secondary: #fafafb;
-        ---color-accent: #62b4ff;
+        ---color-accent: #349eff;
+        ---color-avatar-fill: rgb(203 213 225);
+        ---color-icon-fill: rgb(148 163 184);
+        ---color-table-header: #ffff;
+        ---color-accent3: #0000;
+        ---color-search-fill: rgb(226 232 240);
         ---color-shadow-base: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        ---color-border: rgb(214 211 209);
     }
 }
 
-div[theme="dark"], section[theme="dark"]{
+div[theme="dark"], section[theme="dark"] {
     ---color-text-base: #bbbbbb;
     ---color-primary: #202020;
     ---color-secondary: #2d2d2d;
+    ---color-table-header: rgb(56 130 246 /0.1);
     ---color-shadow-base: rgba(0, 0, 0, 0.2) 0px 5px 10px;
+    ---color-accent3: rgb(66, 65, 77);
+    ---color-search-fill: #323435;
+    ---color-avatar-fill: rgb(64 64 64);
+    ---color-icon-fill: rgb(115 115 115);
+    ---color-border: rgba(255 255 255 /0.3)
+
 }
 
-*{
+* {
     font-family: 'Nunito', sans-serif;
 }
 
@@ -46,4 +60,7 @@ div[theme="dark"], section[theme="dark"]{
 
 .map-container {
     height: 100vh;
+}
+.title{
+    font-family: 'Poppins', sans-serif !important;
 }

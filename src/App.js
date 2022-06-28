@@ -16,30 +16,41 @@ import Login from "./Pages/login";
 import RequireAuth from "./auth/RequireAuth";
 import {AuthProvider} from "./provider/auth";
 import CitizenDetails from "./Pages/citizen/all/citizens-details";
+import Houses from "./Pages/house";
 
 function App() {
     const queryClient = new QueryClient();
     return (
         <QueryClientProvider client={queryClient}>
-                <GlobalContextProvider>
-                <Provider store={store}>
-                    <BrowserRouter>
-                        <AuthProvider>
-                            <Routes>
-                                <Route path={'/login'} exact element={<Login/>}/>
-                                <Route path={'/'} exact element={<Dashboard/>}/>
-                                <Route path={'/citizen/:citizenId'} exact element={<CitizenDetails />}/>
-                                <Route path={'/citizen-registration'} exact element={<CitizenRegistration/>}/>
-                                <Route path={'/citizens'} exact element={<Citizens/>}/>
-                                <Route path={'/statistics/children'} exact element={<Children/>}/>
-                                <Route path={'/statistics/youth'} exact element={<Youth/>}/>
-                                <Route path={'/citizen/edit/:citizenId'} exact element={<EditForm/>}/>
-                                <Route path={'/statistics/elders'} exact element={<Elders/>}/>
-                            </Routes>
-                        </AuthProvider>
-                    </BrowserRouter>
-                </Provider>
-                </GlobalContextProvider>
+
+            <Provider store={store}>
+                <BrowserRouter>
+                    <AuthProvider>
+                        <Routes>
+                            <Route path={'/login'} exact element={<Login/>}/>
+                            <Route path={'/*'} exact element={
+                                <RequireAuth>
+                                    <GlobalContextProvider>
+                                        <Routes>
+                                            <Route path={'/'} exact element={<Dashboard/>}/>
+                                            <Route path={'/houses'} exact element={<Houses/>}/>
+                                            <Route path={'/citizen/:citizenId'} exact element={<CitizenDetails/>}/>
+                                            <Route path={'/citizen-registration'} exact
+                                                   element={<CitizenRegistration/>}/>
+                                            <Route path={'/citizens'} exact element={<Citizens/>}/>
+                                            <Route path={'/statistics/children'} exact element={<Children/>}/>
+                                            <Route path={'/statistics/youth'} exact element={<Youth/>}/>
+                                            <Route path={'/citizen/edit/:citizenId'} exact element={<EditForm/>}/>
+                                            <Route path={'/statistics/elders'} exact element={<Elders/>}/>
+                                        </Routes>
+                                    </GlobalContextProvider>
+                                </RequireAuth>
+                            }/>
+                        </Routes>
+                    </AuthProvider>
+                </BrowserRouter>
+            </Provider>
+
 
             <ReactQueryDevtools initialIsOpen={false} position={'bottom-right'}/>
         </QueryClientProvider>

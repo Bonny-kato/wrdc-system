@@ -1,9 +1,10 @@
 import {useGlobalContext} from "../../context/global-context";
 import {useSelector} from "react-redux";
 import {getAge} from "../../utils";
+import Summary from "./summary";
 
-const RecentlyActions = () =>{
-    const {citizens, isLoading} = useGlobalContext();
+const RecentlyActions = ({citizens, statistics}) =>{
+    const {isLoading} = useGlobalContext();
     console.log("citizens", citizens)
 
     return (
@@ -14,9 +15,7 @@ const RecentlyActions = () =>{
 
             <div className={'grid grid-cols-3 gap-4'}>
                 <div className={''}>
-                    <div className={`h-[18rem] bg-skin-secondary shadow-base  rounded-xl`}>
-
-                    </div>
+                    <Summary statistics={statistics}/>
                 </div>
                 <div className={'h-10 col-span-2'}>
                     <div className={`h-[18rem] bg-skin-secondary shadow-base text-skin-base rounded-xl overflow-hidden p-1`}>
@@ -30,7 +29,7 @@ const RecentlyActions = () =>{
                                 <>
                                     {citizens ? (
                                         <table className={'w-full '}>
-                                            <tr>
+                                            <tr className={'bg-skin-primary'}>
                                                 <th className="text-xs py-2 uppercase title tracking-wider font-semibold ">name</th>
                                                 <th className="text-xs uppercase title tracking-wider font-semibold ">gender</th>
                                                 <th className="text-xs uppercase title tracking-wider font-semibold ">age</th>
@@ -40,13 +39,13 @@ const RecentlyActions = () =>{
 
                                             {citizens.slice(0, 5)?.map((citizen, idx) => (
 
-                                                <tr key={idx} className={`border-b-[1px]  cursor-pointer border-b-secondary/10`}>
-                                                    <th className="text-xs py-4 uppercase title tracking-wider font-semibold ">
+                                                <tr key={idx} className={`border-b-[1px] hover:bg-search-fill cursor-pointer border-b-secondary/10`}>
+                                                    <th className="text-xs py-4 uppercase  tracking-wider   ">
                                                         {citizen.firstName } </th>
-                                                    <th className="text-xs uppercase title tracking-wider font-semibold ">{citizen.gender}</th>
-                                                    <th className="text-xs uppercase title tracking-wider font-semibold ">{getAge(citizen.dob)}</th>
-                                                    <th className="text-xs capitalize title tracking-wider font-semibold ">{citizen.title}</th>
-                                                    <th className="text-xs uppercase title tracking-wider font-semibold ">{citizen.house.identificationNumber}</th>
+                                                    <th className="text-xs uppercase  tracking-wider  ">{citizen.gender}</th>
+                                                    <th className="text-xs uppercase  tracking-wider   ">{getAge(citizen.dob)}</th>
+                                                    <th className="text-xs capitalize  tracking-wider   ">{citizen.title}</th>
+                                                    <th className="text-xs uppercase  tracking-wider   ">{citizen.house.identificationNumber}</th>
                                                 </tr>
                                             ))}
                                         </table>

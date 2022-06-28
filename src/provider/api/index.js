@@ -17,6 +17,16 @@ export const removeCitizen = ({queryKey})=>{
     return remove('/citizens/' + citizenId)
 }
 
+export const registerHouse = (payload) => {
+    return post('/houses', payload)
+}
+
+export const updateHouse = (payload) => {
+    const {houseId, ...payload_} = payload;
+    return put('/houses/' + houseId, payload_)
+}
+
+
 export const fetchHouses = () => {
     return get('/houses')
 }

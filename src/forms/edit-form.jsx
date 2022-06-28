@@ -1,6 +1,7 @@
 import BaseLayout from "../Layouts/BaseLayout";
 import {FieldWrapper} from "../Pages/registration";
-import {Link, useParams} from "react-router-dom";
+import {Link, useParams, useNavigate} from "react-router-dom";
+
 import {Input, Option, Select} from "../components/form-control";
 import {useRef, useState} from "react";
 import {useForm} from "react-hook-form";
@@ -12,6 +13,7 @@ import {formatDate, getAge} from "../utils";
 import Button from "../components/Button";
 
 const EditForm = () => {
+    const navigate = useNavigate();
     const {citizenId} = useParams();
     const detailsRef = useRef(null)
     const [citizen, setCitizen] = useState();
@@ -62,7 +64,8 @@ const EditForm = () => {
     const {mutate, isLoading:isUpdating} = useMutation(updateCitizen, {
         onSuccess: () => {
             console.log("updated successfully..")
-            detailsRef.current && detailsRef.current.click();
+            // detailsRef.current && detailsRef.current.click();
+           navigate('/', { replace: true })
         }
     })
 
@@ -138,8 +141,8 @@ const EditForm = () => {
 
                             <FieldWrapper>
                                 <Select defautlValue={citizen.gender}  {...register('gender')} label={'gender'}>
-                                    <Option value={'male'}/>
-                                    <Option value={'female'}/>
+                                    <Option value={'m'} text={'male'}/>
+                                    <Option value={'f'} text={'female'}/>
                                 </Select>
                             </FieldWrapper>
 
