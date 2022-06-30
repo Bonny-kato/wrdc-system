@@ -26,7 +26,7 @@ const Dashboard = () => {
                 </div>
 
                 <div className={'space-y-8'}>
-                    <div className={'grid grid-cols-2 gap-x-8 mt-6'}>
+                    <div className={'grid  grid-cols-2 gap-x-8 mt-6'}>
                         <div className={`h-[18rem] p-3 bg-skin-secondary shadow-base rounded-xl`}>
                             <BarChart
                                 labels={[

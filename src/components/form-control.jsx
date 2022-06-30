@@ -7,6 +7,7 @@ export const Input = (
         label = "filed label",
         onChange = null,
         defaultValue = "",
+        placeholder="",
         errorMessage = null,
         required=true,
         isError = false,
@@ -28,6 +29,7 @@ export const Input = (
             <input
                 ref={inputRef}
                 {...register(name)}
+                placeholder={placeholder}
                 onChange={(e) => {
                     onChange && onChange(e.target.value)
                 }}

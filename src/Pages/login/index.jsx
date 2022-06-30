@@ -76,6 +76,7 @@ const Login = () =>{
                 <FieldWrapper>
                     <Input
                         register={register}
+                        placeholder={'ward-system@mail.com'}
                         name={'email'}
                         label={'email'}
                         errorMessage={errors.email ? errors.email.message : null}
@@ -85,6 +86,7 @@ const Login = () =>{
                 <FieldWrapper>
                     <Input
                         register={register}
+                        placeholder={'**********'}
                         name={'password'}
                         label={'password'}
                         errorMessage={errors.password ? errors.password.message : null}
