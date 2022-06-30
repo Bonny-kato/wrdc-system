@@ -3,24 +3,35 @@ import StatisticCard from "../../components/statistic-card";
 import RecentlyActions from "./recently-actions";
 import BarChart from "../../charts/bar";
 import {useGlobalContext} from "../../context/global-context";
+import {useSelector} from "react-redux";
 
 const Dashboard = () => {
-    const {statistics} = useGlobalContext();
+    const {citizensGroups, citizens} = useGlobalContext();
+    const {male, female, youth, elders, children, disability} = citizensGroups;
+    const statistics = {
+        all: children.length + youth.length + elders.length,
+        youth: youth.length,
+        elders:elders.length,
+        children:children.length,
+        male: male.length,
+        female:female.length,
+        disability:disability.length
+    }
     return (
         <BaseLayout>
             <section>
                 {/* Current Tile */}
-                <div className={'text-secondary font-semibold text-lg'}>
+                <div className={`text-skin-base font-semibold text-lg`}>
                     Overview
                 </div>
 
                 <div className={'space-y-8'}>
                     <div className={'grid grid-cols-2 gap-x-8 mt-6'}>
-                        <div className={'h-[18rem] bg-white/5 rounded-xl'}>
+                        <div className={`h-[18rem] p-3 bg-skin-secondary shadow-base rounded-xl`}>
                             <BarChart
                                 labels={[
                                     "All citizen",
-                                    "Chldren",
+                                    "Children",
                                     "Youth",
                                     "Elder",
                                 ]}
@@ -28,20 +39,20 @@ const Dashboard = () => {
                                     statistics.all,
                                     statistics.children,
                                     statistics.youth,
-                                    statistics.children,
+                                    statistics.elders,
                                 ]}
                             />
                         </div>
 
-                        <div className={'grid grid-cols-2 gap-4 text-secondary'}>
-                            <StatisticCard title={"Citizens"} value={statistics.all}/>
-                            <StatisticCard title={"Children"} value={statistics.children}/>
-                            <StatisticCard title={"Youth"} value={statistics.youth}/>
-                            <StatisticCard title={"Elders"} value={statistics.elders}/>
+                        <div className={'grid grid-cols-2 gap-4'}>
+                            <StatisticCard linkTo={'/citizens'} title={"citizens"} value={statistics.all || 0}/>
+                            <StatisticCard linkTo={'/statistics/children'} title={"children"} value={statistics.children || 0}/>
+                            <StatisticCard linkTo={'/statistics/youth'} title={"youth"} value={statistics.youth || 0}/>
+                            <StatisticCard linkTo={'/statistics/elders'} title={"elders"} value={statistics.elders || 0}/>
                         </div>
                     </div>
 
-                    <RecentlyActions/>
+                    <RecentlyActions citizens={citizens} statistics={statistics}/>
                 </div>
             </section>
         </BaseLayout>

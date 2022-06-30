@@ -1,5 +1,5 @@
 import { useState } from 'react';
-const STORE_KEY = 'WB-FE';
+const STORE_KEY = 'WDC-SYSTEM';
 
 export function getValueFromLocalStorage(key, defaultValue = null) {
   let store = window.localStorage.getItem(STORE_KEY);

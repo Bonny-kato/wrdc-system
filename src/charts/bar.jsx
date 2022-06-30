@@ -39,11 +39,11 @@ const BarChart = ({ labels, data }) => {
         scales: {
             y: {
                 title: {
-                    display: true,
-                    text: "Total Fund Used",
+                    // display: false,
+                    text: "Number of Citizen",
                     color: "#187AE4",
                 },
-            },
+            }
         },
     };
     return (

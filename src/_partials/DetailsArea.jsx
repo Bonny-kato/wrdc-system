@@ -1,9 +1,10 @@
 import Header from "./Header";
+import {useSelector} from "react-redux";
 
 const DetailsArea = (props) => {
-    console.log(props)
+    const currentTheme = useSelector((state) => state.theme)
     return (
-        <section className={'details-area bg-accent/95 overflow-hidden'}>
+        <section className={`details-area bg-skin-primary overflow-hidden`}>
            <Header />
             <section className={'px-10 py-6 h-full overflow-y-auto'}>
                 {props.props.children}
