@@ -49,12 +49,30 @@ const Login = () =>{
         // console.log(formData)
         mutate(formData);
     }
+
+    const data = [
+        {
+            firstName: "Bonny",
+            lastName: "kato",
+            email: "black@gmai.com",
+            address: "ubungo 345",
+            postcode: "9002"
+        },{
+            firstName: "Bonny2",
+            lastName: "kato2",
+            email: "black@gmai.com2",
+            address: "ubungo 345",
+            postcode: "9002"
+        },
+    ];
+
     return (
         <section theme={currTheme} className={'flex  justify-center items-center h-screen bg-skin-primary'}>
             <form onSubmit={handleSubmit(onSubmit)} className={'bg-skin-secondary shadow-base space-y-3 w-[30%] p-10 rounded-lg'} action="">
                 <p className={'font-semibold  text-center capitalize text-xl text-skin-base'}>
                     Login
                     </p>
+
                 <FieldWrapper>
                     <Input
                         register={register}

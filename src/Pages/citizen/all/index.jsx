@@ -5,28 +5,19 @@ import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
 import BarChart from "../../../charts/bar";
 import {useGlobalContext} from "../../../context/global-context";
-import {useSelector} from "react-redux";
 import ExportJsonToExcel from "../../../forms/citizen-reg-form";
 import PieChart from "../../../charts/pie-chart";
-import {formatDate, groupByLetter} from "../../../utils";
+import {groupByLetter, parseCitizensData} from "../../../utils";
 import SpinLoader from "../../../components/SpinLoader";
+import {useAuth} from "../../../provider/auth";
 
 const Citizens = () => {
     const {citizensGroups, citizens, isLoading, isFetching} = useGlobalContext();
-    const citizenData = citizens.map((citizen) => {
-        const houseInfo = citizen.house;
-        const {_id, house, updatedAt, __v, createdAt, ...rest} = citizen
-        return {
-            ...rest,
-            registrationDate: formatDate(createdAt),
-            houseNumber: houseInfo.identificationNumber,
-            owner: houseInfo.owner.fullName,
-            ownerEmail: houseInfo.owner.email,
-            ownerPhoneNumber: houseInfo.owner.phoneNumber,
-            ownerGender: houseInfo.owner.gender,
-            houseRegistrationDate: formatDate(houseInfo.createdAt)
-        }
-    })
+    const { authUser } = useAuth();
+    const userType = authUser.type;
+    const citizenData = parseCitizensData(citizens)
+
+    console.log("TYPE Type:: ", userType)
 
     const {male, female} = citizensGroups;
     const statistics = {
@@ -36,7 +27,6 @@ const Citizens = () => {
         children: citizensGroups?.children.length,
         gender: [male.length, female.length]
     }
-    const currentTheme = useSelector(store => store.theme)
 
     const groupedCtzByLetter = groupByLetter(citizens)
 
@@ -67,14 +57,18 @@ const Citizens = () => {
 
 
                     <div className={'flex items-center space-x-3'}>
-                        <Link to={'/citizen-registration'}
-                              className={`px-2  text-white space-x-2 py-2 text-xs 
+
+                        {userType.toLowerCase() === "messenger" && (
+                            <Link to={'/citizen-registration'}
+                                  className={`px-2  text-white space-x-2 py-2 text-xs 
                               uppercase border-[1px] border-accent4 group flex tracking-wider
                                bg-accent4 hover:text-white transition-all duration-300 cursor-pointer 
                                rounded  justify-center items-center`}>
-                            <FontAwesomeIcon icon={faPlus} className={'h-4  w-4'}/>
-                            <p className={'tracking-wider'}>Add Citizen</p>
-                        </Link>
+                                <FontAwesomeIcon icon={faPlus} className={'h-4  w-4'}/>
+                                <p className={'tracking-wider'}>Add Citizen</p>
+                            </Link>
+                        )}
+
                         {citizens && <ExportJsonToExcel jsonData={citizenData} filename={'citizens.csv'}/>}
 
                     </div>
@@ -101,6 +95,7 @@ const Citizens = () => {
                         <PieChart labels={['Male', 'Female']} data={statistics.gender}/>
                     </div>
                 </div>
+
 
 
                 <div className={'space-y-10'}>

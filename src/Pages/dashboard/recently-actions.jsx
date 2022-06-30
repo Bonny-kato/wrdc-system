@@ -1,5 +1,4 @@
 import {useGlobalContext} from "../../context/global-context";
-import {useSelector} from "react-redux";
 import {getAge} from "../../utils";
 import Summary from "./summary";
 
@@ -9,13 +8,13 @@ const RecentlyActions = ({citizens, statistics}) =>{
 
     return (
         <div className={'space-y-8'}>
-            <div className={`text-skin-base font-semibold text-lg`}>
-                Recently Action
+            <div className={`text-skin-base font-semibold text-sm`}>
+                Other Details
             </div>
 
             <div className={'grid grid-cols-3 gap-4'}>
                 <div className={''}>
-                    <Summary statistics={statistics}/>
+                    <Summary statistics={statistics} citizens={citizens}/>
                 </div>
                 <div className={'h-10 col-span-2'}>
                     <div className={`h-[18rem] bg-skin-secondary shadow-base text-skin-base rounded-xl overflow-hidden p-1`}>

@@ -1,60 +1,48 @@
 import React from "react";
 import FileSaver from "file-saver";
-import XLSX from "xlsx";
+import * as XLSX from "xlsx";
+import {formatDate, parseCitizensData} from "../utils";
+import {useGlobalContext} from "../context/global-context";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faDownload} from "@fortawesome/free-solid-svg-icons";
 
-const ExportToXLSX = ({ csvData, fileName, wscols }) => {
-    // ******** XLSX with object key as header *************
-    // const fileType =
-    //   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-    // const fileExtension = ".xlsx";
+const ExportToXLSX = ({fileName}) => {
+    const {citizensGroups} = useGlobalContext();
+    const {elders, youth, children, male, female, disability} = citizensGroups;
+    console.log("INSIDE", citizensGroups)
 
-    // const exportToCSV = (csvData, fileName) => {
-    //   const ws = XLSX.utils.json_to_sheet(csvData);
-    //   const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-    //   const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-    //   const data = new Blob([excelBuffer], { type: fileType });
-    //   FileSaver.saveAs(data, fileName + fileExtension);
-    // };
-
-    // ******** XLSX with new header *************
     const fileType =
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
     const fileExtension = ".xlsx";
 
-    const Heading = [
-        {
-            firstName: "First Name",
-            lastName: "Last Name",
-            email: "Email",
-            address: "Address",
-            postcode: "Postcode"
-        }
-    ];
+    const exportToCSV = () => {
+        const eldersSheet = XLSX.utils.json_to_sheet(parseCitizensData(elders));
+        const youthSheet = XLSX.utils.json_to_sheet(parseCitizensData(youth));
+        const childrenSheet = XLSX.utils.json_to_sheet(parseCitizensData(children));
+        const maleSheet = XLSX.utils.json_to_sheet(parseCitizensData(male));
+        const femaleSheet = XLSX.utils.json_to_sheet(parseCitizensData(female));
+        const disabilitySheet = XLSX.utils.json_to_sheet(parseCitizensData(disability));
 
-    const exportToCSV = (csvData, fileName, wscols) => {
-        const ws = XLSX.utils.json_to_sheet(Heading, {
-            header: ["firstName", "lastName", "email", "address", "postcode"],
-            skipHeader: true,
-            origin: 0 //ok
-        });
-        ws["!cols"] = wscols;
-        XLSX.utils.sheet_add_json(ws, csvData, {
-            header: ["firstName", "lastName", "email", "address", "postcode"],
-            skipHeader: true,
-            origin: -1 //ok
-        });
-        const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-        const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-        const data = new Blob([excelBuffer], { type: fileType });
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, eldersSheet, "Elders");
+        XLSX.utils.book_append_sheet(workbook, youthSheet, "Youth");
+        XLSX.utils.book_append_sheet(workbook, childrenSheet, "Children");
+        XLSX.utils.book_append_sheet(workbook, maleSheet, "Male");
+        XLSX.utils.book_append_sheet(workbook, femaleSheet, "Female");
+        XLSX.utils.book_append_sheet(workbook, disabilitySheet, "Disability");
+
+        const excelBuffer = XLSX.write(workbook, {bookType: "xlsx", type: "array"});
+        const data = new Blob([excelBuffer], {type: fileType});
         FileSaver.saveAs(data, fileName + fileExtension);
     };
 
     return (
-        <button
-            variant="warning"
-            onClick={e => exportToCSV(csvData, fileName, wscols)}
+        <button className={'px-2  space-x-2 flex items-center  py-2 text-xs uppercase border-[1.5px] border-accent4 group flex tracking-wider ' +
+            ' text-accent4 transition-all hover:bg-accent4/90 hover:text-white duration-300 cursor-pointer rounded  justify-center items-center'}
+            onClick={exportToCSV}
         >
-            Export XLSX
+            <FontAwesomeIcon icon={faDownload} className={'h-4 w-4'}/>
+            <p>report</p>
         </button>
     );
 };

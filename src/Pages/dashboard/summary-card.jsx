@@ -16,7 +16,7 @@ const SummaryCard = ({name, total=0}) => {
                 {name === "children" && <FontAwesomeIcon icon={faChildReaching} className={'h-6 w-6'} />}
                 {name === "elders" && <FontAwesomeIcon icon={faPersonCane} className={'h-6 w-6'} />}
                 {(name === "youth" || name === "male") && <FontAwesomeIcon icon={faPerson} className={'h-6 w-6'} />}
-                {name === "disability" && <FontAwesomeIcon icon={faWheelchair} className={'h-6 w-6'} />}
+                {name === "disabled" && <FontAwesomeIcon icon={faWheelchair} className={'h-6 w-6'} />}
                 {name === "female" && <FontAwesomeIcon icon={faPersonDress} className={'h-6 w-6'} />}
             </div>
             <p className={'text-xs capitalize'}>{name} {total}</p>

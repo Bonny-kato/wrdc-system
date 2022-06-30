@@ -136,14 +136,14 @@ const SideBar = () => {
                     </SidebarMenu>
 
                     {/* My Account */}
-                    <div
-                        className={`flex items-center justify-between hover:bg-blue-500/20 group hover:rounded-lg  py-2 cursor-pointer`}>
-                        <div
-                            className={'flex space-x-2 group-hover:pl-2 transition-all duration-300 ease-in-out items-center capitalize'}>
-                            <AdjustmentsIcon className={'h-5 rotate-90'}/>
-                            <span>Preferences</span>
-                        </div>
-                    </div>
+                    {/*<div*/}
+                    {/*    className={`flex items-center justify-between hover:bg-blue-500/20 group hover:rounded-lg  py-2 cursor-pointer`}>*/}
+                    {/*    <div*/}
+                    {/*        className={'flex space-x-2 group-hover:pl-2 transition-all duration-300 ease-in-out items-center capitalize'}>*/}
+                    {/*        <AdjustmentsIcon className={'h-5 rotate-90'}/>*/}
+                    {/*        <span>Preferences</span>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                 </div>
             </div>
 
@@ -157,7 +157,7 @@ const SideBar = () => {
 
                 <div className={'leading-5'}>
                     <h1>{authUser.firstName}</h1>
-                    <span className={'text-sm opacity-80 tracking-wider'}>{authUser.lastName}</span>
+                    <span className={'text-sm opacity-80 capitalize tracking-wider'}>{authUser.type}</span>
                 </div>
             </div>
 

@@ -9,6 +9,7 @@ import {Input, Option, Select} from "../../components/form-control";
 import {useMutation, useQuery} from "react-query";
 import {fetchHouses, registerCitizen} from "../../provider/api";
 import {Link} from "react-router-dom";
+import Button from "../../components/Button";
 
 export const FieldWrapper = ({children, className}) =>{
     return (
@@ -56,7 +57,7 @@ const CitizenRegistration = () =>{
         citizenUrl.current && citizenUrl.current.click();
     }
 
-    const {mutate} =  useMutation(registerCitizen,  {
+    const {mutate, isLoading:isRegistering} =  useMutation(registerCitizen,  {
         onSuccess,
     })
 
@@ -85,7 +86,7 @@ const CitizenRegistration = () =>{
     return (
         <BaseLayout>
            <form onSubmit={handleSubmit(onSubmit)} className={'h-full space-y-10 pt-8 px-20'}>
-               <div className={'text-secondary  font-semibold text-lg'}>
+               <div className={'text-skin-base  font-semibold text-lg'}>
                    <p>Citizen Registration</p>
                    <p className={'text-sm font-light opacity-80'}>Click <a className={'text-blue-500'} href="/pdf/citizen-reg-form.pdf" download target={"_blank"}>here</a> to download registration form </p>
                </div>
@@ -93,7 +94,7 @@ const CitizenRegistration = () =>{
                <Link ref={citizenUrl} to={'/citizens'} className={"hidden"}></Link>
 
                <div className={'border-[1px] border-secondary/20 rounded-xl p-6  relative'}>
-                   <p className={'absolute -top-3 ml-4 bg-accent2/95 text-sm font-bold px-2 text-secondary'}> Basic Info</p>
+                   <p className={'absolute -top-3 ml-4 bg-skin-primary text-skin-base text-sm font-bold px-2 '}> Basic Info</p>
 
                    <div className={'grid grid-cols-3 gap-x-5 gap-y-8 text-secondary '}>
 
@@ -195,7 +196,7 @@ const CitizenRegistration = () =>{
 
                {!isChildren && (
                    <div className={'border-[1px] border-secondary/20 rounded-xl p-6  relative'}>
-                       <p className={'absolute -top-3 ml-4 bg-accent2/95 text-sm font-bold px-2 text-secondary'}>
+                       <p className={'absolute -top-3 ml-4  bg-skin-primary text-skin-base text-sm font-bold px-2 '}>
                            Other Info
                        </p>
 
@@ -239,9 +240,9 @@ const CitizenRegistration = () =>{
                )}
 
                <div className={'pb-20'}>
-                   <button type={'submit'} className={'bg-blue-600 px-6 py-3 text-xs uppercase rounded text-white '}>
+                   <Button type={'submit'} loading={isRegistering} type={'submit'} className={'bg-accent4 px-6 py-3 text-xs uppercase rounded text-white '}>
                        submit
-                   </button>
+                   </Button>
                </div>
            </form>
         </BaseLayout>

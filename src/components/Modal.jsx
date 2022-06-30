@@ -11,7 +11,7 @@ const Modal = ({ isOpen, onClose, children }) => {
 
 
 	return createPortal(
-		<Transition appear show={isOpen} as={"div"}>
+		<Transition appear show={isOpen} as={"div"} >
 			<Dialog
 				onClose={onClose}
 				className="fixed inset-0 top-0 z-10 p-5 pt-[25vh]"

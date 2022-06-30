@@ -26,3 +26,22 @@ export const groupByLetter = (citizens) => {
         }
     })
 }
+
+export const parseCitizensData = (citizens) =>{
+    return citizens.map((citizen) => {
+        console.log("CITIZEN:: ", citizen)
+        const houseInfo = citizen.house;
+        const {_id,semifullName, dob, house, updatedAt, __v, createdAt, ...rest} = citizen
+        return {
+            ...rest,
+            birthDate:formatDate(citizen.dob),
+            registrationDate: formatDate(createdAt),
+            houseNumber: houseInfo.identificationNumber,
+            owner: houseInfo.owner.fullName,
+            ownerEmail: houseInfo.owner.email,
+            ownerPhoneNumber: houseInfo.owner.phoneNumber,
+            ownerGender: houseInfo.owner.gender,
+            houseRegistrationDate: formatDate(houseInfo.createdAt)
+        }
+    })
+}

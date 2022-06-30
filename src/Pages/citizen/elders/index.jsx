@@ -8,11 +8,14 @@ import {useGlobalContext} from "../../../context/global-context";
 import {useState, useEffect} from "react";
 import {getAge, groupByLetter} from "../../../utils";
 import PieChart from "../../../charts/pie-chart";
+import {useAuth} from "../../../provider/auth";
 
 const Elders = () => {
     const [currentChildren, setCurrentChildren] = useState()
     const {citizensGroups} = useGlobalContext();
     const {elders} = citizensGroups;
+    const { authUser } = useAuth();
+    const userType = authUser.type;
     const groupedEldersByLetter = groupByLetter(elders)
 
     const statistics = {
@@ -46,14 +49,17 @@ const Elders = () => {
                     </div>
 
                     <div>
-                        <Link to={'/citizen-registration'}
-                              className={`px-2  text-white space-x-2 py-2 text-xs 
+                        {userType.toLowerCase() === "messenger" && (
+                            <Link to={'/citizen-registration'}
+                                  className={`px-2  text-white space-x-2 py-2 text-xs 
                               uppercase border-[1px] border-accent4 group flex tracking-wider
                                bg-accent4 hover:text-white transition-all duration-300 cursor-pointer 
                                rounded  justify-center items-center`}>
-                            <FontAwesomeIcon icon={faPlus} className={'h-4  w-4'}/>
-                            <p className={'tracking-wider'}>Add Citizen</p>
-                        </Link>
+                                <FontAwesomeIcon icon={faPlus} className={'h-4  w-4'}/>
+                                <p className={'tracking-wider'}>Add Citizen</p>
+                            </Link>
+                        )}
+
                     </div>
                 </div>
 

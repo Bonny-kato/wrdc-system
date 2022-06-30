@@ -11,10 +11,13 @@ import DetailCard from "./detail-card";
 import {BellIcon, PencilIcon} from "@heroicons/react/outline";
 import Modal from "../../../components/Modal";
 import LoadingPlaceholder from "../../../components/loading-placeholder";
+import {useAuth} from "../../../provider/auth";
 
 
 const CitizenDetails = () => {
     const {citizenId} = useParams()
+    const { authUser } = useAuth();
+    const userType = authUser.type;
     const citizenRef = useRef(null);
     const [citizen, setCitizen] = useState({});
     const {isLoading, isFetching} = useQuery([`citizen-${citizenId}`, citizenId], getCitizenDetails, {
@@ -79,27 +82,29 @@ const CitizenDetails = () => {
                 <Link ref={citizenRef} to={'/citizens'} />
                 <div className={'font-semibold  flex items-center  justify-between text-xl'}>
                     <p>Citizen Details</p>
-                    <div className={'flex items-center space-x-3'}>
-                        {/* update citizen button */}
-                        <button onClick={()=>setShowConfirmDialog(true)}
-                              className={`px-2 w-24 text-red-500 space-x-2 py-2 text-xs uppercase border-[1px] 
+                    {userType.toLowerCase() === "messenger" &&  (
+                        <div className={'flex items-center space-x-3'}>
+                            {/* update citizen button */}
+                            <button onClick={()=>setShowConfirmDialog(true)}
+                                    className={`px-2 w-24 text-red-500 space-x-2 py-2 text-xs uppercase border-[1px] 
                           border-red-500 group flex tracking-wider hover:bg-red-500 hover:text-white transition-all duration-300 cursor-pointer rounded  justify-center items-center`}>
-                            <FontAwesomeIcon icon={faTrash}
-                                             className={'h-4 transition-all duration-300 group-hover:scale-105'}/>
+                                <FontAwesomeIcon icon={faTrash}
+                                                 className={'h-4 transition-all duration-300 group-hover:scale-105'}/>
 
-                            <p>delete</p>
-                        </button>
+                                <p>delete</p>
+                            </button>
 
-                        {/* delete citizen button */}
-                        <Link to={'/citizen/edit/' + citizen._id}
-                              className={`px-2 w-24  space-x-2 py-2 text-xs uppercase border-[1px] 
+                            {/* delete citizen button */}
+                            <Link to={'/citizen/edit/' + citizen._id}
+                                  className={`px-2 w-24  space-x-2 py-2 text-xs uppercase border-[1px] 
                           border-blue-500 group flex tracking-wider bg-blue-500 text-white transition-all duration-300 cursor-pointer rounded  justify-center items-center`}>
-                            <PencilIcon
-                                className={'h-4 transition-all duration-300 group-hover:scale-105'}/>
+                                <PencilIcon
+                                    className={'h-4 transition-all duration-300 group-hover:scale-105'}/>
 
-                            <p>edit</p>
-                        </Link>
-                    </div>
+                                <p>edit</p>
+                            </Link>
+                        </div>
+                    )}
                 </div>
                 <div className={'border-[1px] border-accent5 p-6 rounded-md py-10 relative'}>
                     <div className={'absolute flex items-center space-x-2 -top-3 bg-skin-primary px-3'}>

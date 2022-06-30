@@ -52,7 +52,7 @@ const Dashboard = () => {
                         </div>
                     </div>
 
-                    <RecentlyActions citizens={citizens?.reverse().slice(0,5)} statistics={statistics}/>
+                    <RecentlyActions citizens={citizens} statistics={statistics}/>
                 </div>
             </section>
         </BaseLayout>
